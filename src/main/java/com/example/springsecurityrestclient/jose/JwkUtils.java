@@ -20,11 +20,9 @@ import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
 import lombok.SneakyThrows;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
@@ -70,10 +68,7 @@ public final class JwkUtils {
 
     @SneakyThrows
     private static KeyPair generateEcKey() {
-        Security.setProperty("crypto.policy", "unlimited");
-        BouncyCastleProvider bouncyCastleProvider = new BouncyCastleProvider();
-        Security.addProvider(bouncyCastleProvider);
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC", bouncyCastleProvider.getName());
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
         keyPairGenerator.initialize(new ECGenParameterSpec("secp256r1"));
         return keyPairGenerator.generateKeyPair();
     }
